@@ -10,17 +10,21 @@ import MenuItem from "@mui/material/MenuItem";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import Button from "@mui/material/Button";
 import { navigate } from "gatsby";
+import { useNavigation } from "../contexts/navigation";
 
-const Navbar = ({ pageName }) => {
+const Navbar = ({ pageName, dontGoBack }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [value, setValue] = React.useState(0);
+  const { goBack } = useNavigation();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (route) => {
     setAnchorElNav(null);
+    if (typeof route === "string") {
+      navigate(route);
+    }
   };
   const pages = [
     {
@@ -32,6 +36,14 @@ const Navbar = ({ pageName }) => {
       route: "/setaccount",
     },
   ];
+
+  const buttonProps = {};
+
+  if (!dontGoBack) {
+    buttonProps.startIcon = <NavigateBeforeIcon />;
+    buttonProps.onClick = goBack;
+  }
+
   return (
     <AppBar position="sticky" justify-content="flex-end">
       <Toolbar>
@@ -41,16 +53,10 @@ const Navbar = ({ pageName }) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Button
-            color="inherit"
-            variant="text"
-            startIcon={<NavigateBeforeIcon />}
-            onClick={() => {
-              window.history.back();
-            }}
-          >
+          <Button color="inherit" variant="text" {...buttonProps}>
             {pageName}
           </Button>
+
           <IconButton
             size="large"
             aria-label="account of current user"
@@ -76,15 +82,10 @@ const Navbar = ({ pageName }) => {
             horizontal: "left",
           }}
           open={Boolean(anchorElNav)}
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-            navigate(pages[newValue].route);
-          }}
           onClose={handleCloseNavMenu}
         >
-          {pages.map(({ name }) => (
-            <MenuItem key={name} onClick={handleCloseNavMenu}>
+          {pages.map(({ name, route }) => (
+            <MenuItem key={name} onClick={() => handleCloseNavMenu(route)}>
               <Typography textAlign="center">{name}</Typography>
             </MenuItem>
           ))}

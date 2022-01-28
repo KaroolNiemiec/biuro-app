@@ -2,19 +2,24 @@ import * as React from "react";
 import Layout from "../components/Layout";
 import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
+import { useFeeDetails } from "../contexts/feeDetails";
+import { calculateDeadline } from "../helpers/date";
 
 export default function Details() {
+  const { feeDetails } = useFeeDetails();
   return (
     <Layout pageName="Szczegóły">
-      <h6>Nazwa</h6>
-      <ListItemText primary={`Zakład Ubezpieczeń Społecznych`} />
-      <h6>Numer Konta</h6>
-      <ListItemText primary={`12 1234 1234 1234 1234 1234`} />
-      <h6>Kwota</h6>
-      <ListItemText primary={`1470,18`} />
-      <h6>Status</h6>
-      <ListItemText primary={`Zakład Ubezpieczeń Społecznych`} />
-      <Button variant="contained">Oznacz jako zapłacone</Button>
+      <h3>Nazwa</h3>
+      <ListItemText primary={feeDetails.name} />
+      <h3>Numer Konta</h3>
+      <ListItemText primary={feeDetails.accountNumber} />
+      <h3>Kwota</h3>
+      <ListItemText primary={`${feeDetails.price} PLN`} />
+      <h3>Status</h3>
+      <ListItemText primary={calculateDeadline(feeDetails)} />
+      <Button variant="contained" sx={{ mt: 4, width: "100%" }}>
+        Oznacz jako zapłacone
+      </Button>
     </Layout>
   );
 }
