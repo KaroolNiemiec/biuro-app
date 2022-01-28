@@ -9,11 +9,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import Button from "@mui/material/Button";
-
-const pages = ["Logowanie", "Ustawienia konta"];
+import { navigate } from "gatsby";
 
 const Navbar = ({ pageName }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [value, setValue] = React.useState(0);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -22,10 +22,19 @@ const Navbar = ({ pageName }) => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
+  const pages = [
+    {
+      name: "Logowanie",
+      route: "/login",
+    },
+    {
+      name: "Ustawienia konta",
+      route: "/setaccount",
+    },
+  ];
   return (
     <AppBar position="sticky" justify-content="flex-end">
-      <Toolbar disableGutters>
+      <Toolbar>
         <Grid
           container
           width="100%"
@@ -36,6 +45,9 @@ const Navbar = ({ pageName }) => {
             color="inherit"
             variant="text"
             startIcon={<NavigateBeforeIcon />}
+            onClick={() => {
+              window.history.back();
+            }}
           >
             {pageName}
           </Button>
@@ -64,11 +76,16 @@ const Navbar = ({ pageName }) => {
             horizontal: "left",
           }}
           open={Boolean(anchorElNav)}
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+            navigate(pages[newValue].route);
+          }}
           onClose={handleCloseNavMenu}
         >
-          {pages.map((page) => (
-            <MenuItem key={page} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center">{page}</Typography>
+          {pages.map(({ name }) => (
+            <MenuItem key={name} onClick={handleCloseNavMenu}>
+              <Typography textAlign="center">{name}</Typography>
             </MenuItem>
           ))}
         </Menu>
