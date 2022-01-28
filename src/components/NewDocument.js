@@ -5,6 +5,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import { navigate } from "gatsby";
 
 const actions = [
   { icon: <FileCopyIcon />, name: "Copy" },
@@ -24,6 +25,7 @@ export default function BasicSpeedDial() {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
+            onClick={() => navigate("/add-document")}
           />
         ))}
       </SpeedDial>
