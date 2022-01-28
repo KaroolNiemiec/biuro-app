@@ -1,39 +1,30 @@
-// import * as React from "react";
-// import Container from "@mui/material/Container";
-// import Typography from "@mui/material/Typography";
-// import Box from "@mui/material/Box";
-// import ProTip from "../components/ProTip";
-// import Link from "../components/Link";
-// import Copyright from "../components/Copyright";
-// import footer from "../components/Footer";
-
-import * as React from "react";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-// import Container from "@mui/material/Container";
-// import Typography from "@mui/material/Typography";
-// import Box from "@mui/material/Box";
-// import ProTip from '../components/ProTip';
-// import Copyright from "../components/Copyright";
-
-/* <Container maxWidth="sm">
-<Box sx={{ my: 4 }}>
-  <Typography variant="h4" component="h1" gutterBottom>
-    Gatsby example
-  </Typography>
-  <Link to="/about" color="secondary">
-    Go to the about page
-  </Link>
-  <ProTip />
-  <Copyright />
-</Box>
-</Container> */
+import React from "react";
+import Layout from "../components/Layout";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import IconButton from "@mui/material/IconButton";
 
 export default function Index() {
   return (
-    <>
-      <Navbar />
-      <Footer />
-    </>
+    <Layout pageName="Pulpit">
+      <h4>Podatki i opłaty</h4>
+      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        {[1, 2, 3].map((value) => (
+          <ListItem
+            key={value}
+            disableGutters
+            secondaryAction={
+              <IconButton>
+                <KeyboardArrowRightIcon />
+              </IconButton>
+            }
+          >
+            <ListItemText primary={`Line item ${value}`} />
+          </ListItem>
+        ))}
+      </List>
+    </Layout>
   );
 }
