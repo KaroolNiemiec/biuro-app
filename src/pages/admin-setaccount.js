@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import {
   Avatar,
-  Button,
   ListItem,
   ListItemAvatar,
   ListItemText,
   TextField,
+  Grid,
+  Button,
 } from "@mui/material";
-import { Grid } from "@mui/material";
-import { useUser } from "../contexts/user";
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
   addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
 } from "firebase/firestore";
-import { database } from "../../firebase-config";
 import { navigate } from "gatsby";
+import { useUser } from "../contexts/user";
+import { database } from "../../firebase-config";
 
-export default function SetAccount() {
+export default function AdminSetAccount() {
   const { displayName, email, photoURL, uid } = useUser().user;
-  const [fetched, setFetched] = useState(false);
   const [data, setData] = useState(null);
+  const [fetched, setFetched] = useState(false);
   const [dataId, setDataId] = useState(null);
 
   useEffect(() => {
@@ -45,19 +45,19 @@ export default function SetAccount() {
     if (dataId) {
       const ref = doc(database, "Users", dataId);
       updateDoc(ref, data).then(() => {
-        navigate("/");
+        navigate("/admin-menu");
       });
     } else {
       const ref = collection(database, "Users");
       addDoc(ref, { ...data, uid }).then(() => {
-        navigate("/");
+        navigate("/admin-menu");
       });
     }
   };
 
   if (!fetched) return null;
   return (
-    <Layout pageName="Ustawienia Konta">
+    <Layout pageName="Ustawienia Administratora">
       <Grid
         container
         direction="column"
@@ -81,43 +81,13 @@ export default function SetAccount() {
           }}
         />
         <TextField
-          label="NIP"
+          label="Numer konta bankowego"
           variant="outlined"
           sx={{ width: "100%", mb: 3 }}
-          defaultValue={data?.nipNumber}
-          value={data?.nipNumber}
+          defaultValue={data?.accountNumber}
+          value={data?.accountNumber}
           onChange={(e) => {
-            setData({ ...data, nipNumber: e.target.value });
-          }}
-        />
-        <TextField
-          label="Numer konta ZUS"
-          variant="outlined"
-          sx={{ width: "100%", mb: 3 }}
-          defaultValue={data?.zusAccountNumber}
-          value={data?.zusAccountNumber}
-          onChange={(e) => {
-            setData({ ...data, zusAccountNumber: e.target.value });
-          }}
-        />
-        <TextField
-          label="Numer konta urzędu skarbowego"
-          variant="outlined"
-          sx={{ width: "100%", mb: 3 }}
-          defaultValue={data?.usAccountNumber}
-          value={data?.usAccountNumber}
-          onChange={(e) => {
-            setData({ ...data, usAccountNumber: e.target.value });
-          }}
-        />
-        <TextField
-          label="Numer konta VAT"
-          variant="outlined"
-          sx={{ width: "100%", mb: 3 }}
-          defaultValue={data?.vatAccountNumber}
-          value={data?.vatAccountNumber}
-          onChange={(e) => {
-            setData({ ...data, vatAccountNumber: e.target.value });
+            setData({ ...data, accountNumber: e.target.value });
           }}
         />
         <Button variant="outlined" onClick={saveAccount}>

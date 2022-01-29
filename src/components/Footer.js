@@ -6,13 +6,15 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import { navigate } from "gatsby";
 import { useNavigation } from "../contexts/navigation";
+import { useUser } from "../contexts/user";
 
 const Footer = () => {
   const { navigation, setNavigation } = useNavigation();
+  const { user, adminUID } = useUser();
   const routes = [
     {
       text: "Pulpit",
-      route: "/",
+      route: user?.uid === adminUID ? "/admin-menu" : "/",
       IconComponent: HomeOutlinedIcon,
     },
     {

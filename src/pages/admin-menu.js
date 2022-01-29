@@ -1,36 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { IconButton } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-const User = () => {
-  const userMock = [
-    {
-      name: "Auto serwis KNP",
-      userId: 1,
-    },
-    {
-      name: "Kebab Szama",
-      userId: 2,
-    },
-    {
-      name: "Amet sp. z o. o.",
-      userId: 3,
-    },
-  ];
-  const [user, setUser] = useState(userMock);
+import { collection, getDocs } from "firebase/firestore";
+import { database } from "../../firebase-config";
+import { useUser } from "../contexts/user";
 
+const AdminMenu = () => {
+  const [users, setUsers] = useState();
+  const [fetched, setFetched] = useState(false);
+  const { adminUID } = useUser();
+
+  useEffect(() => {
+    const ref = collection(database, "Users");
+
+    getDocs(ref).then(({ docs }) => {
+      const usersDocs = docs
+        .map((doc) => doc.data())
+        .filter(({ uid }) => adminUID !== uid);
+
+      setUsers(usersDocs);
+      setFetched(true);
+    });
+  }, []);
+
+  if (!fetched) return null;
   return (
     <>
-      <Navbar pageName="Wiadomości" />
+      <Navbar pageName="Pulpit administratora" dontGoBack />
       <List sx={{ mb: 2 }}>
-        {user.map(({ name, userId }) => (
-          <React.Fragment key={userId}>
+        {users.map(({ uid, companyName }) => (
+          <React.Fragment key={uid}>
             <ListItem>
               <ListItemText
-                primary={name}
+                primary={companyName}
                 style={{ textAlign: "left", marginLeft: 15 }}
               />
               <IconButton>
@@ -43,4 +49,4 @@ const User = () => {
     </>
   );
 };
-export default User;
+export default AdminMenu;

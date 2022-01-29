@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-const Layout = ({ children, pageName, dontGoBack }) => (
+const Layout = ({ children, pageName, dontGoBack, dontShowFooter }) => (
   <Grid
     container
     flexDirection="column"
@@ -14,7 +14,7 @@ const Layout = ({ children, pageName, dontGoBack }) => (
     <Grid sx={{ m: 2, height: "calc(100vh - 145px)", overflow: "scroll" }}>
       {children}
     </Grid>
-    <Footer />
+    {!dontShowFooter && <Footer />}
   </Grid>
 );
 

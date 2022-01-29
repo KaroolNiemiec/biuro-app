@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Layout from "../components/Layout";
 import TextField from "@mui/material/TextField";
@@ -7,32 +7,32 @@ import { Button } from "@mui/material";
 
 const fees = [
   {
-    value: "1",
     label: "Opłata Skarbowa",
+    fieldName: "usAccountNumber",
   },
   {
-    value: "2",
     label: "Składka ZUS",
+    fieldName: "zusAccountNumber",
   },
   {
-    value: "3",
     label: "Podatek VAT",
+    fieldName: "vatAccountNumber",
   },
   {
-    value: "4",
     label: "Usługi księgowe",
   },
   {
-    value: "5",
     label: "Inne",
   },
 ];
 export default function SelectTextFields() {
-  const [fee, setFee] = React.useState();
+  const [fee, setFee] = useState();
 
   const handleChange = (event) => {
     setFee(event.target.value);
   };
+
+  console.info(fee);
 
   return (
     <Layout pageName="Dodaj opłatę">
@@ -47,8 +47,8 @@ export default function SelectTextFields() {
           mb: 3,
         }}
       >
-        {fees.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+        {fees.map((option, i) => (
+          <MenuItem key={i} value={i}>
             {option.label}
           </MenuItem>
         ))}

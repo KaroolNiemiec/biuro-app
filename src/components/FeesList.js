@@ -18,7 +18,7 @@ const FeesList = ({ data }) => {
       <div
         style={{
           backgroundColor: "gray",
-          height: "100%",
+          height: "92%",
           position: "absolute",
           width: 1,
           left: 11,

@@ -11,29 +11,40 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import Button from "@mui/material/Button";
 import { navigate } from "gatsby";
 import { useNavigation } from "../contexts/navigation";
+import { signOut, getAuth } from "firebase/auth";
+import { useUser } from "../contexts/user";
 
 const Navbar = ({ pageName, dontGoBack }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const { goBack } = useNavigation();
+  const { user, adminUID } = useUser();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = (route) => {
+  const handleCloseNavMenu = (action) => {
     setAnchorElNav(null);
-    if (typeof route === "string") {
-      navigate(route);
+
+    if (typeof action === "function") {
+      action();
     }
   };
+
   const pages = [
     {
-      name: "Logowanie",
-      route: "/login",
+      name: "Wyloguj się",
+      action: () => {
+        const auth = getAuth();
+        signOut(auth);
+        navigate("/login");
+      },
     },
     {
       name: "Ustawienia konta",
-      route: "/setaccount",
+      action: () => {
+        navigate(user?.uid === adminUID ? "/admin-setaccount" : "/setaccount");
+      },
     },
   ];
 
@@ -84,8 +95,8 @@ const Navbar = ({ pageName, dontGoBack }) => {
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
         >
-          {pages.map(({ name, route }) => (
-            <MenuItem key={name} onClick={() => handleCloseNavMenu(route)}>
+          {pages.map(({ name, action }) => (
+            <MenuItem key={name} onClick={() => handleCloseNavMenu(action)}>
               <Typography textAlign="center">{name}</Typography>
             </MenuItem>
           ))}
