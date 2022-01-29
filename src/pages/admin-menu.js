@@ -8,11 +8,12 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { collection, getDocs } from "firebase/firestore";
 import { database } from "../../firebase-config";
 import { useUser } from "../contexts/user";
+import { navigate } from "gatsby";
 
 const AdminMenu = () => {
   const [users, setUsers] = useState();
   const [fetched, setFetched] = useState(false);
-  const { adminUID } = useUser();
+  const { adminUID, setChosenUser } = useUser();
 
   useEffect(() => {
     const ref = collection(database, "Users");
@@ -27,6 +28,11 @@ const AdminMenu = () => {
     });
   }, []);
 
+  const onNavigate = (uid) => {
+    setChosenUser(uid);
+    navigate("/taxes-fees");
+  };
+
   if (!fetched) return null;
   return (
     <>
@@ -39,7 +45,7 @@ const AdminMenu = () => {
                 primary={companyName}
                 style={{ textAlign: "left", marginLeft: 15 }}
               />
-              <IconButton>
+              <IconButton onClick={() => onNavigate(uid)}>
                 <KeyboardArrowRightIcon />
               </IconButton>
             </ListItem>

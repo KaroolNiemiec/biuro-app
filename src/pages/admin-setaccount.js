@@ -57,7 +57,7 @@ export default function AdminSetAccount() {
 
   if (!fetched) return null;
   return (
-    <Layout pageName="Ustawienia Administratora">
+    <Layout pageName="Ustawienia Administratora" dontShowFooter>
       <Grid
         container
         direction="column"

@@ -11,6 +11,7 @@ const UserContext = createContext({});
 export const UserProvider = ({ children }) => {
   const [adminUID, setAdminUID] = useState(null);
   const [user, setUser] = useState(null);
+  const [chosenUser, setChosenUser] = useState(null);
 
   useEffect(() => {
     const remoteConfig = getRemoteConfig(app);
@@ -21,7 +22,9 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ adminUID, setUser, user }}>
+    <UserContext.Provider
+      value={{ adminUID, setUser, user, chosenUser, setChosenUser }}
+    >
       {children}
     </UserContext.Provider>
   );

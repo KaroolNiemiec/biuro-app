@@ -7,45 +7,13 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import { Grid, Typography } from "@mui/material";
 import { navigate } from "gatsby";
 import FeesList from "../components/FeesList";
+import { useUser } from "../contexts/user";
 
 export default function Index() {
   const goToTaxesAndFees = () => {
     navigate("/taxes-fees");
   };
-  const taxesMock = [
-    {
-      name: "Składki ZUS",
-      price: 1457.49,
-      accountNumber: "121234123412341234",
-      paymentDeadline: "2014-02-11",
-      isPayed: false,
-      createdAt: "2020-11-03",
-    },
-    {
-      name: "Podatek PIT",
-      price: 1457.49,
-      accountNumber: "121234123412341234",
-      paymentDeadline: "2022-12-12",
-      isPayed: false,
-      createdAt: "2020-11-08",
-    },
-    {
-      name: "Usługi księgowe",
-      price: 1457.49,
-      accountNumber: "121234123412341234",
-      paymentDeadline: "2020-12-12",
-      isPayed: true,
-      createdAt: "2020-11-08",
-    },
-    {
-      name: "Podatek VAT",
-      price: 1457.49,
-      accountNumber: "121234123412341234",
-      paymentDeadline: "2020-12-12",
-      isPayed: false,
-      createdAt: "2020-11-08",
-    },
-  ];
+  const { user } = useUser();
 
   return (
     <Layout pageName="Mój pulpit" dontGoBack>
@@ -77,7 +45,7 @@ export default function Index() {
           />
           <ListItemText primary="8000 PLN" secondary="Niezapłacone 8000 PLN" />
         </ListItem>
-        <FeesList data={taxesMock.filter(({ isPayed }) => !isPayed)} />
+        <FeesList uid={user.uid} donShowPayed />
       </Grid>
     </Layout>
   );
