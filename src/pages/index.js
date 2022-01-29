@@ -2,36 +2,18 @@ import React from "react";
 import Layout from "../components/Layout";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import IconButton from "@mui/material/IconButton";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import { Grid, Typography } from "@mui/material";
-import { navigate } from "gatsby";
 import FeesList from "../components/FeesList";
 import { useUser } from "../contexts/user";
 
 export default function Index() {
-  const goToTaxesAndFees = () => {
-    navigate("/taxes-fees");
-  };
   const { user } = useUser();
 
   return (
     <Layout pageName="Mój pulpit" dontGoBack>
       <Grid sx={{ height: "100%" }}>
-        <Typography sx={{ fontSize: 20, fontWeight: 700, mb: 2 }}>
-          Podatki i opłaty
-        </Typography>
-        <ListItem
-          disableGutters
-          secondaryAction={
-            <IconButton
-              sx={{ fontSize: 15, fontWeight: 800 }}
-              onClick={goToTaxesAndFees}
-            >
-              Zobacz <br /> więcej
-            </IconButton>
-          }
-        >
+        <ListItem disableGutters>
           <DateRangeIcon
             sx={{
               height: 50,
@@ -43,9 +25,12 @@ export default function Index() {
               padding: 1,
             }}
           />
-          <ListItemText primary="8000 PLN" secondary="Niezapłacone 8000 PLN" />
+          <ListItemText
+            primary="Podatki i opłaty"
+            secondary="Twoja lista opłat"
+          />
         </ListItem>
-        <FeesList uid={user.uid} donShowPayed />
+        <FeesList uid={user.uid} />
       </Grid>
     </Layout>
   );

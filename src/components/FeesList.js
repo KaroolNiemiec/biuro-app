@@ -5,7 +5,7 @@ import ListItemText from "@mui/material/ListItemText";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import IconButton from "@mui/material/IconButton";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
-import { isPast, parseISO } from "date-fns";
+import { isPast } from "date-fns";
 import { navigate } from "gatsby";
 import { useFeeDetails } from "../contexts/feeDetails";
 import { calculateDeadline } from "../helpers/date";
@@ -22,7 +22,12 @@ const FeesList = ({ uid }) => {
     const q = query(ref, where("uid", "==", uid));
 
     getDocs(q).then(({ docs }) => {
-      setData(docs.map((doc) => doc.data()));
+      setData(
+        docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
       setFetched(true);
     });
   }, []);
@@ -65,7 +70,7 @@ const FeesList = ({ uid }) => {
                 mr: 2,
                 color: isPayed
                   ? "green"
-                  : isPast(paymentDeadline)
+                  : isPast(paymentDeadline.toDate())
                   ? "red"
                   : "blue",
               }}

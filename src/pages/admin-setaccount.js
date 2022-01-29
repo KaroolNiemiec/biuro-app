@@ -61,7 +61,7 @@ export default function AdminSetAccount() {
       <Grid
         container
         direction="column"
-        justifyContent="space-between"
+        justifyContent="flex-start"
         alignItems="center"
       >
         <ListItem button>
